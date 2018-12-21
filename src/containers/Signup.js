@@ -1,11 +1,12 @@
-import React from 'react';
-import LoaderButton from '../components/LoaderButton';
-import Paper from '@material-ui/core/Paper';
-import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import { Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+import React from "react";
+import LoaderButton from "../components/LoaderButton";
+import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import SnackBar from '../components/SnackBar'
+import TextField from "@material-ui/core/TextField";
+import { Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const styles = theme => ({
   root: {
@@ -15,62 +16,64 @@ const styles = theme => ({
     margin: "90px 80px"
   },
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: '10px'
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    flexDirection: "column",
+    padding: "10px"
   },
   textField: {
     marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   dense: {
-    marginTop: 16,
+    marginTop: 16
   },
   menu: {
-    width: 200,
+    width: 200
   },
 
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   input: {
-    display: 'none',
+    display: "none"
   },
   title: {
-    fontSize: '50px',
-    width: '100%',
-    textAlign: 'center',
+    fontSize: "50px",
+    width: "100%",
+    textAlign: "center",
     maxWidth: 500,
-    margin: '0 auto',
-    textDecoration: 'underline',
-  },
-
+    margin: "0 auto",
+    textDecoration: "underline"
+  }
 });
 
 class Signup extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       isLoading: false,
       email: "",
       password: "",
       confirmPassword: "",
-      userName: '',
-      newUser: null
+      userName: "",
+      newUser: null,
+      open: false
     };
   }
 
   validateForm() {
-    return this.state.email.length > 0 &&
+    return (
+      this.state.email.length > 0 &&
       this.state.password.length > 0 &&
       this.state.password === this.state.confirmPassword
+    );
   }
 
   handleChange = name => event => {
     this.setState({
-      [name]: event.target.value,
+      [name]: event.target.value
     });
   };
 
@@ -81,29 +84,37 @@ class Signup extends React.Component {
 
     try {
       const userData = {
-        'email': this.state.email,
-        'password': this.state.password,
-        'userName': this.state.userName
-      }
-      axios.post('http://localhost:8080/auth/server', { body: userData })
-        .then(data => console.log('data:', data));
+        email: this.state.email,
+        password: this.state.password,
+        userName: this.state.userName
+      };
+      axios
+        .post("http://localhost:8080/auth/server/signup", userData)
+        .then(data => {
+          console.log(data.data);
+          console.log(data.statusCode)
+          this.props.authenticateUser(data.data);
+          this.setState({
+            open: true,
+            message: 'welcome to our site',
+            variant: 'success'
+          })
+          localStorage.setItem("userId", data.data);
+          this.props.history.push("/");
+        });
     } catch (e) {
       alert(e.message);
     }
 
     this.setState({ isLoading: false });
-  }
+  };
 
   renderForm(classes) {
     return (
       <Paper className={classes.root} elevation={3}>
-        <Typography
-          className={classes.title}
-          gutterBottom
-          component='h1'
-        >
+        <Typography className={classes.title} gutterBottom component="h1">
           Signup
-      </Typography>
+        </Typography>
         <form className={classes.container} noValidate autoComplete="off">
           <TextField
             id="filled-email-input"
@@ -111,7 +122,7 @@ class Signup extends React.Component {
             className={classes.textField}
             type="email"
             autoComplete="email"
-            onChange={this.handleChange('email')}
+            onChange={this.handleChange("email")}
             margin="normal"
           />
           <TextField
@@ -120,7 +131,7 @@ class Signup extends React.Component {
             className={classes.textField}
             type="text"
             autoComplete="email"
-            onChange={this.handleChange('userName')}
+            onChange={this.handleChange("userName")}
             margin="normal"
           />
           <TextField
@@ -129,7 +140,7 @@ class Signup extends React.Component {
             className={classes.textField}
             type="password"
             autoComplete="current-password"
-            onChange={this.handleChange('password')}
+            onChange={this.handleChange("password")}
             margin="normal"
           />
           <TextField
@@ -138,7 +149,7 @@ class Signup extends React.Component {
             className={classes.textField}
             type="password"
             autoComplete="current-password"
-            onChange={this.handleChange('confirmPassword')}
+            onChange={this.handleChange("confirmPassword")}
             margin="normal"
           />
           <LoaderButton
@@ -147,28 +158,32 @@ class Signup extends React.Component {
             text="Signup"
             loadingText="Logging in…"
             onClick={this.handleSubmit}
-            color='primary'
+            color="primary"
           />
         </form>
       </Paper>
-    )
+    );
   }
 
   render() {
     const { classes } = this.props;
-    
+
     return (
       <React.Fragment>
-        {
-          !this.state.newUser && this.renderForm(classes)
-        }
+        {!this.state.newUser && this.renderForm(classes)}
+        <SnackBar
+          open={this.state.open}
+          duration={6000}
+          variant={this.state.variant}
+          message={this.state.message}
+        />
       </React.Fragment>
     );
   }
 }
 
 Signup.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Signup);
