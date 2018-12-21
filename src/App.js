@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import Routes from "./Routes";
 import NavBar from "./components/NavBar";
-// import './App.css';
+import Routes from "./Routes";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      token: null
     };
   }
 
@@ -26,7 +26,7 @@ class App extends Component {
     };
     return (
       <div>
-        <NavBar />
+        <NavBar isAuthenticated={this.state.isAuthenticated} />
         <Routes childProps={childProps} />
       </div>
     );
