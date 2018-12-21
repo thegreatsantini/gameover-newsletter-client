@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Routes from "./Routes";
 import NavBar from "./components/NavBar";
+import Routes from "./Routes";
 
 class App extends Component {
   constructor(props) {
