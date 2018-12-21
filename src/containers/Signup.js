@@ -105,8 +105,6 @@ class Signup extends React.Component {
     } catch (e) {
       alert(e.message);
     }
-
-    this.setState({ isLoading: false });
   };
 
   renderForm(classes) {
@@ -156,7 +154,7 @@ class Signup extends React.Component {
             disabled={!this.validateForm()}
             isLoading={this.state.isLoading}
             text="Signup"
-            loadingText="Logging in…"
+            loadingText="Signing up…"
             onClick={this.handleSubmit}
             color="primary"
           />
