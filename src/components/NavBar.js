@@ -44,9 +44,13 @@ class MenuAppBar extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  handleLogout = () => {
+    localStorage.removeItem('userId');
+    this.props.authenticateUser(false, '')
+  }
   render() {
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     return (
@@ -84,7 +88,7 @@ class MenuAppBar extends React.Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                  <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
                 </Menu>
               </div>
             ) : (
