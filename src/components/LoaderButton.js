@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     button: {
@@ -26,7 +26,6 @@ const LoaderButton = (props, {
     loadingText,
     color
 }) => {
-    
     const { classes } = props;
     return (
         <Button
