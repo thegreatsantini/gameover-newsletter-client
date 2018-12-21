@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import AuthenticatedRoute from "./components/AuthenticatedRoute";
-import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AppliedRoute from './components/AppliedRoute';
-import Login from './containers/Login';
-import Signup from './containers/Signup';
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import Home from './containers/Home';
-import NotFound from './components/NotFound';
 import Landing from './components/Landing';
+import Login from './containers/Login';
+import NotFound from './components/NotFound';
+import Signup from './containers/Signup';
+import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
 export default ({ childProps }) =>
   <Switch>
