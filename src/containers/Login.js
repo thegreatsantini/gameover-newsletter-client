@@ -70,33 +70,24 @@ class Login extends React.Component {
     });
   };
 
-  handleSubmit = async event => {
+  handleSubmit = event => {
     event.preventDefault();
     this.setState({ isLoading: true });
-    try {
-      const userData = {
-        email: this.state.email,
-        password: this.state.password,
-        userName: this.state.userName
-      };
-      console.log(userData)
-      axios
-        .post("http://localhost:8080/auth/server/login", userData)
-        .then(data => {
+    const userData = {
+      email: this.state.email,
+      password: this.state.password,
+      userName: this.state.userName
+    };
+    console.log(userData)
+    axios
+      .post("http://localhost:8080/auth/server/login", userData)
+      .then(data => {
           console.log(data.data.data);
-          this.props.authenticateUser(data.data);
-          this.setState({
-            open: true,
-            message: "welcome back",
-            variant: "success"
-          });
           localStorage.setItem("userId", data.data.data);
           this.props.history.push("/");
-        });
-    } catch (e) {
-      alert(e.message);
-    }
-    this.setState({ isLoading: false });
+          this.props.authenticateUser(data.data);
+        })
+      .catch(err => alert('Email address not recognized. Go to signup page to create an account.'));
   };
 
   render() {
