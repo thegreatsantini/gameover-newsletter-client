@@ -8,25 +8,46 @@ class App extends Component {
 
     this.state = {
       isAuthenticated: false,
-      token: null
+      userId: null
     };
   }
 
-  authenticateUser = token => {
+  componentDidMount() {
+    this.checkUser()
+  }
+
+  checkUser = () => {
+    const currentUser = localStorage.getItem('userId');
+    console.log('on refresh app', currentUser);
+    if (currentUser) {
+      console.log('loged in from app')
+      this.setState({
+        isAuthenticated: true,
+        userId: currentUser
+      })
+    }
+    else {
+      console.log('no user from app')
+    }
+  }
+
+  authenticateUser = (isAuthenticated, userId) => {
     this.setState({
-      isAuthenticated: true,
-      token
+      isAuthenticated,
+      userId
     });
   };
   render() {
     const childProps = {
       authenticateUser: this.authenticateUser,
       isAuthenticated: this.state.isAuthenticated,
-      token: this.state.token
+      userId: this.state.userId
     };
     return (
       <div>
-        <NavBar isAuthenticated={this.state.isAuthenticated} />
+        <NavBar 
+        authenticateUser={this.authenticateUser}
+        isAuthenticated={this.state.isAuthenticated} />
         <Routes childProps={childProps} />
       </div>
     );

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 
@@ -17,24 +18,37 @@ class Home extends Component {
       .then(res => console.log("res", res))
       .catch(err => console.log("err", err));
   };
-  async componentWillMount() {
-    console.log(this.props);
-  }
+  // async componentWillMount() {
+  //   console.log(this.props);
+  // }
+
+  renderLander = () => {
+    return <p>LANDING PAGEING NOT LOGGED IN</p>;
+  };
+
   render() {
-    const { classes } = this.props;
+    const { classes, isAuthenticated } = this.props;
     return (
-      <div className={classes.root}>
-        <p>this is the home page</p>
-        <p>{this.props.token}</p>
-        <Button
-          onClick={this.handleTest}
-          variant="contained"
-          color="primary"
-          className={classes.button}
-        >
-          Query api
-        </Button>
-      </div>
+      <React.Fragment>
+        {isAuthenticated ? (
+          <div className={classes.root}>
+            <p>this is the home page</p>
+            <p>{this.props.userId}</p>
+            <Button
+              component={Link}
+              to="/sandb
+              ox"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Query api
+            </Button>
+          </div>
+        ) : (
+          this.renderLander()
+        )}
+      </React.Fragment>
     );
   }
 }

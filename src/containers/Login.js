@@ -1,61 +1,62 @@
-import React from 'react';
-import LoaderButton from '../components/LoaderButton';
-import Paper from '@material-ui/core/Paper';
-import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import { Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import React from "react";
+import LoaderButton from "../components/LoaderButton";
+import Paper from "@material-ui/core/Paper";
+import PropTypes from "prop-types";
+import axios from "axios";
+import TextField from "@material-ui/core/TextField";
+import { Typography } from "@material-ui/core";
+import SnackBar from "../components/SnackBar";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 4,
     paddingBottom: theme.spacing.unit * 4,
-    margin: "90px 80px",
-    
+    margin: "90px 80px"
   },
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: '10px',
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    flexDirection: "column",
+    padding: "10px"
   },
   textField: {
     marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   dense: {
-    marginTop: 16,
+    marginTop: 16
   },
   menu: {
-    width: 200,
+    width: 200
   },
 
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   input: {
-    display: 'none',
+    display: "none"
   },
   title: {
-    fontSize: '50px',
-    width: '100%',
-    textAlign: 'center',
+    fontSize: "50px",
+    width: "100%",
+    textAlign: "center",
     maxWidth: 500,
-    margin: '0 auto',
-    textDecoration: 'underline',
-  },
-
+    margin: "0 auto",
+    textDecoration: "underline"
+  }
 });
 
 class Login extends React.Component {
   constructor() {
-    super()
+    super();
     this.state = {
       isLoading: false,
-      email: '',
-      password: '',
+      email: "",
+      password: "",
+      open: false
     };
   }
 
@@ -65,35 +66,39 @@ class Login extends React.Component {
 
   handleChange = name => event => {
     this.setState({
-      [name]: event.target.value,
+      [name]: event.target.value
     });
   };
 
-  handleSubmit = async event => {
+  handleSubmit = event => {
     event.preventDefault();
     this.setState({ isLoading: true });
-    try {
-      // query server
-      // this.props.userHasAuthenticated(true);
-      // this.props.history.push("/");
-    } catch (e) {
-      alert(e.message);
-      this.setState({ isLoading: false });
-    }
-  }
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    axios
+      .post("http://localhost:8080/auth/server/login", userData)
+      .then(data => {
+        console.log(data.data.data);
+        localStorage.setItem("userId", data.data.data);
+        this.props.history.push("/");
+        this.props.authenticateUser(data.data);
+      })
+      .catch(err => {
+        console.log(err);
+        alert('User already exists or ');
+      });
+  };
 
   render() {
     const { classes } = this.props;
 
     return (
       <Paper className={classes.root} elevation={3}>
-        <Typography
-          className={classes.title}
-          gutterBottom
-          component='h1'
-        >
+        <Typography className={classes.title} gutterBottom component="h1">
           Login
-      </Typography>
+        </Typography>
         <form className={classes.container} noValidate autoComplete="off">
           <TextField
             id="filled-email-input"
@@ -101,7 +106,7 @@ class Login extends React.Component {
             className={classes.textField}
             type="email"
             autoComplete="email"
-            onChange={this.handleChange('email')}
+            onChange={this.handleChange("email")}
             margin="normal"
           />
           <TextField
@@ -110,7 +115,7 @@ class Login extends React.Component {
             className={classes.textField}
             type="password"
             autoComplete="current-password"
-            onChange={this.handleChange('password')}
+            onChange={this.handleChange("password")}
             margin="normal"
           />
           <LoaderButton
@@ -119,16 +124,22 @@ class Login extends React.Component {
             text="Login"
             loadingText="Logging in…"
             onClick={this.handleSubmit}
-            color='primary'
+            color="primary"
           />
         </form>
+        <SnackBar
+          open={this.state.open}
+          duration={6000}
+          variant={this.state.variant}
+          message={this.state.message}
+        />
       </Paper>
     );
   }
 }
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Login);
