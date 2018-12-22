@@ -70,6 +70,16 @@ class Login extends React.Component {
     });
   };
 
+  // handleSubmit = event => {
+  //   axios
+  //     .get("http://localhost:8080/auth/server/username/password")
+  //     .then(res => console.log("res", res))
+  //     .catch(err => {
+  //       alert(err.message);
+  //       console.log("err", err);
+  //     });
+  // };
+
   handleSubmit = event => {
     event.preventDefault();
     this.setState({ isLoading: true });
@@ -79,15 +89,21 @@ class Login extends React.Component {
     };
     axios
       .post("http://localhost:8080/auth/server/login", userData)
-      .then(data => {
-        console.log(data.data.data);
-        localStorage.setItem("userId", data.data.data);
-        this.props.history.push("/");
-        this.props.authenticateUser(data.data);
+      .then(res => {
+        console.log(res);
+        if (res.data.message === "User not recognized") {
+          alert("Profile does not exist, please go signup to create a profile");
+        } else if (res.data.message === "incorrect email or password") {
+          alert(res.data.message);
+        } else {
+          localStorage.setItem("userId", res.data.userId);
+          this.props.history.push("/");
+          this.props.authenticateUser(true, res.data.userId);
+        }
       })
       .catch(err => {
         console.log(err);
-        alert('User already exists or ');
+        alert("User already exists or ");
       });
   };
 
