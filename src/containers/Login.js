@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { Typography } from "@material-ui/core";
-import SnackBar from '../components/SnackBar'
+import SnackBar from "../components/SnackBar";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -75,19 +75,20 @@ class Login extends React.Component {
     this.setState({ isLoading: true });
     const userData = {
       email: this.state.email,
-      password: this.state.password,
-      userName: this.state.userName
+      password: this.state.password
     };
-    console.log(userData)
     axios
       .post("http://localhost:8080/auth/server/login", userData)
       .then(data => {
-          console.log(data.data.data);
-          localStorage.setItem("userId", data.data.data);
-          this.props.history.push("/");
-          this.props.authenticateUser(data.data);
-        })
-      .catch(err => alert('Email address not recognized. Go to signup page to create an account.'));
+        console.log(data.data.data);
+        localStorage.setItem("userId", data.data.data);
+        this.props.history.push("/");
+        this.props.authenticateUser(data.data);
+      })
+      .catch(err => {
+        console.log(err);
+        alert('User already exists or ');
+      });
   };
 
   render() {
