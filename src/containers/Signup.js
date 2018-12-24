@@ -2,7 +2,6 @@ import React from "react";
 import LoaderButton from "../components/LoaderButton";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
-import SnackBar from '../components/SnackBar'
 import TextField from "@material-ui/core/TextField";
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -59,7 +58,8 @@ class Signup extends React.Component {
       confirmPassword: "",
       userName: "",
       newUser: null,
-      open: false
+      open: false,
+      isDisabled: null
     };
   }
 
@@ -76,7 +76,9 @@ class Signup extends React.Component {
       [name]: event.target.value
     });
   };
-
+  componentDidMount() {
+    console.log(this.props.showNotifier);
+  }
   handleSubmit = async event => {
     event.preventDefault();
 
@@ -90,17 +92,14 @@ class Signup extends React.Component {
       };
       axios
         .post("http://localhost:8080/auth/server/signup", userData)
-        .then(data => {
-          console.log(data.data);
-          console.log(data.statusCode)
-          this.props.authenticateUser(data.data);
-          this.setState({
-            open: true,
-            message: 'welcome to our site',
-            variant: 'success'
-          })
-          localStorage.setItem("userId", data.data);
+        .then(res => {
+          this.props.showNotifier(
+            "Successfully Signedup. Lets start gaming!",
+            "success"
+          );
+          localStorage.setItem("userId", res.data);
           this.props.history.push("/");
+          this.props.authenticateUser(true, res.data);
         });
     } catch (e) {
       alert(e.message);
@@ -151,7 +150,7 @@ class Signup extends React.Component {
             margin="normal"
           />
           <LoaderButton
-            disabled={!this.validateForm()}
+            disabled={this.state.disabled || !this.validateForm()}
             isLoading={this.state.isLoading}
             text="Signup"
             loadingText="Signing up…"
@@ -169,12 +168,6 @@ class Signup extends React.Component {
     return (
       <React.Fragment>
         {!this.state.newUser && this.renderForm(classes)}
-        <SnackBar
-          open={this.state.open}
-          duration={6000}
-          variant={this.state.variant}
-          message={this.state.message}
-        />
       </React.Fragment>
     );
   }

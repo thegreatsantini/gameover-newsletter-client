@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import { Typography } from "@material-ui/core";
-import SnackBar from "../components/SnackBar";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -92,9 +91,18 @@ class Login extends React.Component {
       .then(res => {
         console.log(res);
         if (res.data.message === "User not recognized") {
-          alert("Profile does not exist, please go signup to create a profile");
+          this.props.showNotifier(
+            "User not recognized, please go to signup to create a profile",
+            "warning"
+          );
+          this.setState({
+            isLoading: false
+          });
         } else if (res.data.message === "incorrect email or password") {
-          alert(res.data.message);
+          this.props.showNotifier(res.data.message, "error");
+          this.setState({
+            isLoading: false
+          });
         } else {
           localStorage.setItem("userId", res.data.userId);
           this.props.history.push("/");
@@ -115,7 +123,12 @@ class Login extends React.Component {
         <Typography className={classes.title} gutterBottom component="h1">
           Login
         </Typography>
-        <form className={classes.container} noValidate autoComplete="off">
+        <form
+          onSubmit={this.handleSubmit}
+          className={classes.container}
+          noValidate
+          autoComplete="off"
+        >
           <TextField
             id="filled-email-input"
             label="Email"
@@ -143,12 +156,6 @@ class Login extends React.Component {
             color="primary"
           />
         </form>
-        <SnackBar
-          open={this.state.open}
-          duration={6000}
-          variant={this.state.variant}
-          message={this.state.message}
-        />
       </Paper>
     );
   }
