@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "./components/NavBar";
 import Routes from "./Routes";
+import Notifier, { openSnackbar } from "./components/Notifier";
 
 class App extends Component {
   constructor(props) {
@@ -12,24 +13,28 @@ class App extends Component {
     };
   }
 
+  showNotifier = (message, variant) => {
+    openSnackbar({
+      message,
+      variant
+    });
+  };
+
   componentDidMount() {
-    this.checkUser()
+    this.checkUser();
   }
 
   checkUser = () => {
-    const currentUser = localStorage.getItem('userId');
-    console.log('on refresh app', currentUser);
+    const currentUser = localStorage.getItem("userId");
     if (currentUser) {
-      console.log('loged in from app')
       this.setState({
         isAuthenticated: true,
         userId: currentUser
-      })
+      });
+    } else {
+      console.log("no user from app");
     }
-    else {
-      console.log('no user from app')
-    }
-  }
+  };
 
   authenticateUser = (isAuthenticated, userId) => {
     this.setState({
@@ -41,15 +46,18 @@ class App extends Component {
     const childProps = {
       authenticateUser: this.authenticateUser,
       isAuthenticated: this.state.isAuthenticated,
-      userId: this.state.userId
+      userId: this.state.userId,
+      showNotifier: this.showNotifier
     };
     return (
-      <div>
-        <NavBar 
-        authenticateUser={this.authenticateUser}
-        isAuthenticated={this.state.isAuthenticated} />
+      <React.Fragment>
+        <NavBar
+          authenticateUser={this.authenticateUser}
+          isAuthenticated={this.state.isAuthenticated}
+        />
         <Routes childProps={childProps} />
-      </div>
+        <Notifier />
+      </React.Fragment>
     );
   }
 }
