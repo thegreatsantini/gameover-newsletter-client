@@ -89,7 +89,6 @@ class Login extends React.Component {
     axios
       .post("http://localhost:8080/auth/server/login", userData)
       .then(res => {
-        console.log(res);
         if (res.data.message === "User not recognized") {
           this.props.showNotifier(
             "User not recognized, please go to signup to create a profile",
@@ -104,9 +103,11 @@ class Login extends React.Component {
             isLoading: false
           });
         } else {
+          console.log(res.data)
           localStorage.setItem("userId", res.data.userId);
+          localStorage.setItem('currentUser', JSON.stringify(res.data))
           this.props.history.push("/");
-          this.props.authenticateUser(true, res.data.userId);
+          this.props.authenticateUser(true, res.data.userId, res.data);
         }
       })
       .catch(err => {

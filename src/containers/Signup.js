@@ -97,9 +97,10 @@ class Signup extends React.Component {
             "Successfully Signedup. Lets start gaming!",
             "success"
           );
-          localStorage.setItem("userId", res.data);
+          localStorage.setItem("userId", res.data.userId);
+          localStorage.setItem("currentUser", JSON.stringify(res.data));
           this.props.history.push("/");
-          this.props.authenticateUser(true, res.data);
+          this.props.authenticateUser(true, res.data.userId, res.data);
         });
     } catch (e) {
       alert(e.message);
