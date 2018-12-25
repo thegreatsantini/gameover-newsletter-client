@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
-
+import User from './User'
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
@@ -28,23 +28,11 @@ class Home extends Component {
 
   render() {
     const { classes, isAuthenticated } = this.props;
+    // console.log(this.props)
     return (
       <React.Fragment>
         {isAuthenticated ? (
-          <div className={classes.root}>
-            <p>this is the home page</p>
-            <p>{this.props.userId}</p>
-            <Button
-              component={Link}
-              to="/sandb
-              ox"
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Query api
-            </Button>
-          </div>
+          <User currentUser={this.props.currentUser} userId={this.props.userId} /> 
         ) : (
           this.renderLander()
         )}
