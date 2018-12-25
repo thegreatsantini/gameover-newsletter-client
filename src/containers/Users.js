@@ -16,8 +16,9 @@ class Users extends Component {
       .then(res => console.log("res", res))
       .catch(err => console.log("err", err));
   };
-  async componentWillMount() {
-    
+  async componentDidMount() {
+    const userData = await axios.get(`http://localhost:8080/users/all`);
+    console.log(userData)
   }
 
   render() {
