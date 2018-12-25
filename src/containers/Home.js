@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
-import Button from "@material-ui/core/Button";
 import User from './User'
 import { withStyles } from "@material-ui/core/styles";
 
@@ -9,6 +7,7 @@ const styles = {
   root: {}
 };
 
+// ***change this to stateless function component***
 class Home extends Component {
   state = {};
 
