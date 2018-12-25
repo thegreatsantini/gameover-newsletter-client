@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {Redirect} from 'react-router-dom'
 import User from './User'
 import { withStyles } from "@material-ui/core/styles";
 
@@ -31,7 +32,7 @@ class Home extends Component {
     return (
       <React.Fragment>
         {isAuthenticated ? (
-          <User currentUser={this.props.currentUser} userId={this.props.userId} /> 
+          <Redirect to={`/user/${this.props.currentUser.userName}`} />
         ) : (
           this.renderLander()
         )}
