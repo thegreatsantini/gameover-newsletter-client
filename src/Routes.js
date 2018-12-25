@@ -8,7 +8,7 @@ import NotFound from './components/NotFound';
 import Signup from './containers/Signup';
 import SandBox from './SandBox'
 import Users from './containers/Users'
-// import User from './containers/User'
+import User from './containers/User'
 import Games from './containers/Games'
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 
@@ -18,7 +18,7 @@ export default ({ childProps }) =>
     <UnauthenticatedRoute path="/signup" exact component={Signup} props={childProps} />
     <UnauthenticatedRoute path="/login" exact component={Login} props={childProps} />
 
-    {/* <AuthenticatedRoute path="/user" exact component={User} props={childProps} /> */}
+    <AuthenticatedRoute path="/user/:username" exact component={User} props={childProps} />
     <AuthenticatedRoute path="/users" exact component={Users} props={childProps} />
     <AuthenticatedRoute path="/games" exact component={Games} props={childProps} />
 
