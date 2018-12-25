@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "./components/NavBar";
 import Routes from "./Routes";
+import Notifier, { openSnackbar } from "./components/Notifier";
 
 class App extends Component {
   constructor(props) {
@@ -8,48 +9,60 @@ class App extends Component {
 
     this.state = {
       isAuthenticated: false,
-      userId: null
+      userId: null,
+      currentUser: null
     };
   }
 
+  showNotifier = (message, variant) => {
+    openSnackbar({
+      message,
+      variant
+    });
+  };
+
   componentDidMount() {
-    this.checkUser()
+    this.checkUser();
   }
 
   checkUser = () => {
-    const currentUser = localStorage.getItem('userId');
-    console.log('on refresh app', currentUser);
+    const currentUser = localStorage.getItem("userId");
+    const allData = localStorage.getItem('currentUser')
     if (currentUser) {
-      console.log('loged in from app')
       this.setState({
         isAuthenticated: true,
-        userId: currentUser
-      })
+        userId: currentUser,
+        currentUser: JSON.parse(allData)
+      });
+    } else {
+      console.log("no user from app");
     }
-    else {
-      console.log('no user from app')
-    }
-  }
+  };
 
-  authenticateUser = (isAuthenticated, userId) => {
+  authenticateUser = (isAuthenticated, userId, allData) => {
     this.setState({
       isAuthenticated,
-      userId
+      userId,
+      currentUser: allData
     });
   };
   render() {
     const childProps = {
       authenticateUser: this.authenticateUser,
       isAuthenticated: this.state.isAuthenticated,
-      userId: this.state.userId
+      userId: this.state.userId,
+      showNotifier: this.showNotifier,
+      currentUser: this.state.currentUser
     };
     return (
-      <div>
-        <NavBar 
-        authenticateUser={this.authenticateUser}
-        isAuthenticated={this.state.isAuthenticated} />
+      <React.Fragment>
+        <NavBar
+          authenticateUser={this.authenticateUser}
+          isAuthenticated={this.state.isAuthenticated}
+        />
         <Routes childProps={childProps} />
-      </div>
+        <Notifier />
+      </React.Fragment>
     );
   }
 }
