@@ -6,13 +6,13 @@ import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
   p: {
-      border: 'solid red 2px'
+    border: "solid red 2px"
   }
 };
 
 class User extends Component {
   state = {
-      isLoading : false,
+    isLoading: false
   };
 
   handleTest = () => {
@@ -23,33 +23,28 @@ class User extends Component {
   };
 
   showPopUp = () => {
-    this.props.showNotifier('from User', 'error')
-  }
+    this.props.showNotifier("from User", "error");
+  };
 
-// componentDidMount() {
-//     console.log(this.props)
-// }
-
+  // componentDidMount() {
+  //     console.log(this.props)
+  // }
 
   render() {
-    const { classes, isAuthenticated, currentUser } = this.props;
-    const {isLoading} = this.state
-    console.log(this.props.currentUser)
+    const { classes } = this.props;
     return (
       <React.Fragment>
-        {!isLoading && (
-            <div className={classes.root}>
-            <p>this is the home page</p>
-            <p>{this.props.currentUser.userName}</p>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Query api
-            </Button>
-            </div>
-        )}
+        <div className={classes.root}>
+          <p>this is the home page</p>
+          <p>{this.props.currentUser.userName}</p>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Query api
+          </Button>
+        </div>
       </React.Fragment>
     );
   }
