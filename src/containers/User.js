@@ -26,9 +26,10 @@ class User extends Component {
     this.props.showNotifier("from User", "error");
   };
 
-  // componentDidMount() {
-  //     console.log(this.props)
-  // }
+  async componentDidMount() {
+    const userData = await axios.get(`http://localhost:8080/user/${this.props.userId}`);
+    console.log(userData)
+  }
 
   render() {
     const { classes } = this.props;
@@ -36,7 +37,7 @@ class User extends Component {
       <React.Fragment>
         <div className={classes.root}>
           <p>this is the home page</p>
-          <p>{this.props.currentUser.userName}</p>
+          <p>{this.props.userId}</p>
           <Button
             variant="contained"
             color="primary"

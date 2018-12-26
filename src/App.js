@@ -27,7 +27,7 @@ class App extends Component {
 
   checkUser = () => {
     const currentUser = localStorage.getItem("userId");
-    const allData = localStorage.getItem('currentUser')
+    const allData = localStorage.getItem("currentUser");
     if (currentUser) {
       this.setState({
         isAuthenticated: true,
@@ -56,12 +56,16 @@ class App extends Component {
     };
     return (
       <React.Fragment>
-        <NavBar
-          authenticateUser={this.authenticateUser}
-          isAuthenticated={this.state.isAuthenticated}
-        />
-        <Routes childProps={childProps} />
-        <Notifier />
+        {this.state.isAuthenticated && (
+          <React.Fragment>
+            <NavBar
+              authenticateUser={this.authenticateUser}
+              isAuthenticated={this.state.isAuthenticated}
+            />
+            <Routes childProps={childProps} />
+            <Notifier />
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   }
