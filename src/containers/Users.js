@@ -17,7 +17,7 @@ class Users extends Component {
       .catch(err => console.log("err", err));
   };
   async componentDidMount() {
-    const userData = await axios.get(`http://localhost:8080/users/all`);
+    const userData = await axios.get(`http://localhost:8080/usersSheet/all`);
     console.log(userData)
   }
 
