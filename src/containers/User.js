@@ -27,7 +27,7 @@ class User extends Component {
   };
 
   async componentDidMount() {
-    const userData = await axios.get(`http://localhost:8080/user/${this.props.userId}`);
+    const userData = await axios.get(`http://localhost:8080/user/watchlist/${this.props.userId}`);
     console.log(userData)
   }
 
