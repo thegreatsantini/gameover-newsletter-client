@@ -10,7 +10,8 @@ class App extends Component {
     this.state = {
       isAuthenticated: false,
       userId: null,
-      currentUser: null
+      currentUser: null,
+      isAuthenticating: true
     };
   }
 
@@ -31,10 +32,14 @@ class App extends Component {
     if (currentUser) {
       this.setState({
         isAuthenticated: true,
+        isAuthenticating: false,
         userId: currentUser,
         currentUser: JSON.parse(allData)
       });
     } else {
+      this.setState({
+        isAuthenticating: false
+      })
       console.log("no user from app");
     }
   };
@@ -42,6 +47,7 @@ class App extends Component {
   authenticateUser = (isAuthenticated, userId, allData) => {
     this.setState({
       isAuthenticated,
+      isAuthenticating: false,
       userId,
       currentUser: allData
     });
@@ -56,7 +62,7 @@ class App extends Component {
     };
     return (
       <React.Fragment>
-        {this.state.isAuthenticated && (
+        {!this.state.isAuthenticating && (
           <React.Fragment>
             <NavBar
               authenticateUser={this.authenticateUser}
