@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
-
+import { currentUser, removeGame, removeFriend, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = {
@@ -15,21 +15,38 @@ class User extends Component {
     isLoading: false
   };
 
-  handleTest = () => {
-    axios
-      .get("http://localhost:8080/gamesheets")
-      .then(res => console.log("res", res))
-      .catch(err => console.log("err", err));
+  visitUser =async (friendId) => {
+    const result = await visitFriend(friendId)
+    console.log(result)
+  }
+
+  getCurrentUser = async userId => {
+    const result = await currentUser(userId);
+    console.log(result);
+    // axios
+    //   .get("http://localhost:8080/gamesheets")
+    //   .then(res => console.log("res", res))
+    //   .catch(err => console.log("err", err));
+  };
+
+  unfollow = async (currentUser, friendId) => {
+    const result = await removeFriend(currentUser, friendId)
+    console.log(result)
+  };
+
+  removeGame = async (userId, watchlist) => {
+    const result = await removeGame(userId, watchlist);
+    console.log(result);
   };
 
   showPopUp = () => {
     this.props.showNotifier("from User", "error");
   };
 
-  async componentDidMount() {
-    const userData = await axios.get(`http://localhost:8080/user/watchlist/${this.props.userId}`);
-    console.log(userData)
-  }
+  // async componentDidMount() {
+  //   const userData = await axios.get(`http://localhost:8080/user/watchlist/${this.props.userId}`);
+  //   console.log(userData)
+  // }
 
   render() {
     const { classes } = this.props;
@@ -39,11 +56,36 @@ class User extends Component {
           <p>this is the home page</p>
           <p>{this.props.userId}</p>
           <Button
+            onClick={this.getCurrentUser.bind(null, this.props.userId)}
             variant="contained"
             color="primary"
             className={classes.button}
           >
-            Query api
+            Get User
+          </Button>
+          <Button
+            onClick={this.removeGame.bind(null, this.props.userId, ["games"])}
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            remove game
+          </Button>
+          <Button
+            onClick={this.unfollow.bind(null, this.props.userId, 'friendId')}
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            remove friend
+          </Button>
+          <Button
+            onClick={this.visitUser.bind(null, 'f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca')}
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            visit friend
           </Button>
         </div>
       </React.Fragment>
