@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { currentUser, removeGame, removeFriend, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
@@ -53,8 +53,8 @@ class User extends Component {
     return (
       <React.Fragment>
         <div className={classes.root}>
-          <p>this is the home page</p>
-          <p>{this.props.userId}</p>
+          <h1>User homepage</h1>
+          <p>ID: {this.props.userId}</p>
           <Button
             onClick={this.getCurrentUser.bind(null, this.props.userId)}
             variant="contained"

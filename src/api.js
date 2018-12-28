@@ -16,7 +16,7 @@ export const visitFriend = async (friendId) => {
 }
 
 export const addGame = async (id, game) => {
-    const addGame = await axios.post(`http://localhost:8080/gamesheet/watchlist/add`, {
+    const addGame = await axios.post(`http://localhost:8080/user/watchlist/add`, {
         id,
         game
     })
@@ -41,4 +41,9 @@ export const followUser = async (currentUser, friendId) => {
 
 export const removeFriend = async (currentUser, friendId) => {
     return { currentUser, friendId}
+}
+
+export const getUsers = async () => {
+    const allUsers = await axios.get("http://localhost:8080/gamesheets/games")
+    return allUsers
 }
