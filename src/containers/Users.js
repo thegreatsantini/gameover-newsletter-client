@@ -36,7 +36,7 @@ class Users extends Component {
           onClick={this.addFriend.bind(
             null,
             this.props.userId,
-            "f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca"
+            "6197721298167684"
           )}
           variant="contained"
           color="primary"
