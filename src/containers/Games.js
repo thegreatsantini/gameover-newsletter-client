@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 // import axios from "axios";
 import Button from "@material-ui/core/Button";
-import { listGames, addGame, visitFriend } from "../api";
+import { listGames, addGame } from "../api";
 const styles = {
   root: {}
 };
@@ -13,21 +13,14 @@ class Games extends Component {
 
   fetchGames = async () => {
     const results = await listGames();
-    console.log(results)
+    console.log(results);
   };
 
-  addGame = async (id, game) => {
-    const result = await addGame(id, game)
-    console.log(result)
-  }
-
-  visitUser = async (friendId) => {
-    const result = await visitFriend(friendId)
-    console.log(result)
-  }
-  // async componentWillMount() {
-    
-  // }
+  addGame = async (id, rowId) => {
+    console.log("*", rowId);
+    const result = await addGame(id, rowId);
+    console.log(result);
+  };
 
   render() {
     const { classes } = this.props;
@@ -45,20 +38,16 @@ class Games extends Component {
               List Games
             </Button>
             <Button
-              onClick={this.addGame.bind(null, this.props.userId, 'smash bros')}
+              onClick={this.addGame.bind(
+                null,
+                this.props.userId,
+                "1185848798537604"
+              )}
               variant="contained"
               color="primary"
               className={classes.button}
             >
               Add Game
-            </Button>
-            <Button
-              onClick={this.visitUser.bind(null, 'friend Id')}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              view friend
             </Button>
           </React.Fragment>
         )}
