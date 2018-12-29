@@ -15,23 +15,19 @@ class User extends Component {
     isLoading: false
   };
 
-  visitUser =async (friendId) => {
-    const result = await visitFriend(friendId)
-    console.log(result)
-  }
+  visitUser = async friendId => {
+    const result = await visitFriend(friendId);
+    console.log(result);
+  };
 
   getCurrentUser = async userId => {
     const result = await currentUser(userId);
     console.log(result);
-    // axios
-    //   .get("http://localhost:8080/gamesheets")
-    //   .then(res => console.log("res", res))
-    //   .catch(err => console.log("err", err));
   };
 
   unfollow = async (currentUser, friendId) => {
-    const result = await removeFriend(currentUser, friendId)
-    console.log(result)
+    const result = await removeFriend(currentUser, friendId);
+    console.log(result);
   };
 
   removeGame = async (userId, watchlist) => {
@@ -72,7 +68,11 @@ class User extends Component {
             remove game
           </Button>
           <Button
-            onClick={this.unfollow.bind(null, this.props.userId, 'friendId')}
+            onClick={this.unfollow.bind(
+              null,
+              this.props.userId,
+              "6197721298167684"
+            )}
             variant="contained"
             color="primary"
             className={classes.button}
@@ -80,7 +80,10 @@ class User extends Component {
             remove friend
           </Button>
           <Button
-            onClick={this.visitUser.bind(null, 'f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca')}
+            onClick={this.visitUser.bind(
+              null,
+              "f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca"
+            )}
             variant="contained"
             color="primary"
             className={classes.button}
