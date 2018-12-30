@@ -4,15 +4,18 @@ import Button from "@material-ui/core/Button";
 import { currentUser, removeGame, removeFriend, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = {
+const styles = theme => ({
   p: {
     border: "solid red 2px"
-  }
-};
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+});
 
 class User extends Component {
   state = {
-    isLoading: false
+    isLoading: true
   };
 
   visitUser = async friendId => {
@@ -21,8 +24,7 @@ class User extends Component {
   };
 
   getCurrentUser = async userId => {
-    const result = await currentUser(userId);
-    console.log(result);
+    return await currentUser(userId);
   };
 
   unfollow = async (currentUser, friendId) => {
@@ -39,10 +41,22 @@ class User extends Component {
     this.props.showNotifier("from User", "error");
   };
 
-  // async componentDidMount() {
-  //   const userData = await axios.get(`http://localhost:8080/user/watchlist/${this.props.userId}`);
-  //   console.log(userData)
-  // }
+  async componentDidMount() {
+    try {
+      const userData = await this.getCurrentUser(this.props.userId);
+      const { email, userName, followers, watchlist } = userData.data;
+      this.setState({
+        email,
+        userName,
+        followers,
+        watchlist,
+        isLoading: false
+      });
+    } catch (err) {
+      alert(`Error fetching user data: ${err.message}`);
+      this.setState({ isLoading: false })
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -71,7 +85,7 @@ class User extends Component {
             onClick={this.unfollow.bind(
               null,
               this.props.userId,
-              "6197721298167684"
+              "4156663718537092"
             )}
             variant="contained"
             color="primary"
