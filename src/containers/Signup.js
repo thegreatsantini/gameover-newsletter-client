@@ -76,9 +76,7 @@ class Signup extends React.Component {
       [name]: event.target.value
     });
   };
-  componentDidMount() {
-    console.log(this.props.showNotifier);
-  }
+
   handleSubmit = async event => {
     event.preventDefault();
 
