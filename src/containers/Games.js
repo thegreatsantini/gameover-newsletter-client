@@ -3,24 +3,41 @@ import { withStyles } from "@material-ui/core/styles";
 // import axios from "axios";
 import Button from "@material-ui/core/Button";
 import { listGames, addGame } from "../api";
-const styles = {
-  root: {}
-};
+const styles = theme => ({
+  root: {},
+  button: {
+    margin: theme.spacing.unit,
+  },
+});
 
 // ***change this to stateless function component***
 class Games extends Component {
-  state = {};
+  state = {
+    isLoading: true,
+    games: []
+  };
 
   fetchGames = async () => {
-    const results = await listGames();
-    console.log(results);
+    return await listGames();
   };
 
   addGame = async (id, rowId) => {
-    console.log("*", rowId);
     const result = await addGame(id, rowId);
     console.log(result);
   };
+
+  async componentDidMount() {
+    try {
+      const allGames = await this.fetchGames().then( response => response.data);
+      this.setState({
+        games : allGames,
+        isLoading: false
+      });
+    } catch (err) {
+      alert(`Error fetching games: ${err.message}`);
+      this.setState({ isLoading:false })
+    }
+  }
 
   render() {
     const { classes } = this.props;
