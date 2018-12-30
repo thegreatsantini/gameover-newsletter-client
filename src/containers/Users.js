@@ -5,25 +5,37 @@ import Button from "@material-ui/core/Button";
 
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = {
-  root: {}
-};
+const styles = theme => ({
+  root: {},
+  button: {
+    margin: theme.spacing.unit
+  }
+});
 
-// ***change this to stateless function component***
 class Users extends Component {
-  state = {};
+  state = {
+    isLoading: true,
+    users: []
+  };
 
   addFriend = async (currentUser, friendId) => {
     const result = await followUser(currentUser, friendId);
     console.log(result);
   };
-  // async componentDidMount() {
-  //   const userData = await axios.get(`http://localhost:8080/usersSheet/all`);
-  //   console.log(userData)
-  // }
+  async componentDidMount() {
+    try {
+      const allUsers = await this.fetchUsers().then(response => response.data);
+      this.setState({
+        isLoading: false,
+        users: allUsers
+      });
+    } catch (err) {
+      alert(`Error fetching users: ${err.message}`);
+      this.setState({ isLoading: false });
+    }
+  }
   fetchUsers = async () => {
-    const result = await getUsers();
-    console.log(result);
+    return await getUsers();
   };
 
   render() {
@@ -36,7 +48,7 @@ class Users extends Component {
           onClick={this.addFriend.bind(
             null,
             this.props.userId,
-            "f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca"
+            "6197721298167684"
           )}
           variant="contained"
           color="primary"

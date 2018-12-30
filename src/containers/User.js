@@ -4,34 +4,32 @@ import Button from "@material-ui/core/Button";
 import { currentUser, removeGame, removeFriend, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = {
+const styles = theme => ({
   p: {
     border: "solid red 2px"
-  }
-};
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+});
 
 class User extends Component {
   state = {
-    isLoading: false
+    isLoading: true
   };
 
-  visitUser =async (friendId) => {
-    const result = await visitFriend(friendId)
-    console.log(result)
-  }
+  visitUser = async friendId => {
+    const result = await visitFriend(friendId);
+    console.log(result);
+  };
 
   getCurrentUser = async userId => {
-    const result = await currentUser(userId);
-    console.log(result);
-    // axios
-    //   .get("http://localhost:8080/gamesheets")
-    //   .then(res => console.log("res", res))
-    //   .catch(err => console.log("err", err));
+    return await currentUser(userId);
   };
 
   unfollow = async (currentUser, friendId) => {
-    const result = await removeFriend(currentUser, friendId)
-    console.log(result)
+    const result = await removeFriend(currentUser, friendId);
+    console.log(result);
   };
 
   removeGame = async (userId, watchlist) => {
@@ -43,10 +41,22 @@ class User extends Component {
     this.props.showNotifier("from User", "error");
   };
 
-  // async componentDidMount() {
-  //   const userData = await axios.get(`http://localhost:8080/user/watchlist/${this.props.userId}`);
-  //   console.log(userData)
-  // }
+  async componentDidMount() {
+    try {
+      const userData = await this.getCurrentUser(this.props.userId);
+      const { email, userName, followers, watchlist } = userData.data;
+      this.setState({
+        email,
+        userName,
+        followers,
+        watchlist,
+        isLoading: false
+      });
+    } catch (err) {
+      alert(`Error fetching user data: ${err.message}`);
+      this.setState({ isLoading: false })
+    }
+  }
 
   render() {
     const { classes } = this.props;
@@ -72,7 +82,11 @@ class User extends Component {
             remove game
           </Button>
           <Button
-            onClick={this.unfollow.bind(null, this.props.userId, 'friendId')}
+            onClick={this.unfollow.bind(
+              null,
+              this.props.userId,
+              "4156663718537092"
+            )}
             variant="contained"
             color="primary"
             className={classes.button}
@@ -80,7 +94,10 @@ class User extends Component {
             remove friend
           </Button>
           <Button
-            onClick={this.visitUser.bind(null, 'f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca')}
+            onClick={this.visitUser.bind(
+              null,
+              "f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca"
+            )}
             variant="contained"
             color="primary"
             className={classes.button}

@@ -2,32 +2,42 @@ import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 // import axios from "axios";
 import Button from "@material-ui/core/Button";
-import { listGames, addGame, visitFriend } from "../api";
-const styles = {
-  root: {}
-};
+import { listGames, addGame } from "../api";
+const styles = theme => ({
+  root: {},
+  button: {
+    margin: theme.spacing.unit,
+  },
+});
 
 // ***change this to stateless function component***
 class Games extends Component {
-  state = {};
-
-  fetchGames = async () => {
-    const results = await listGames();
-    console.log(results)
+  state = {
+    isLoading: true,
+    games: []
   };
 
-  addGame = async (id, game) => {
-    const result = await addGame(id, game)
-    console.log(result)
-  }
+  fetchGames = async () => {
+    return await listGames();
+  };
 
-  visitUser = async (friendId) => {
-    const result = await visitFriend(friendId)
-    console.log(result)
+  addGame = async (id, rowId) => {
+    const result = await addGame(id, rowId);
+    console.log(result);
+  };
+
+  async componentDidMount() {
+    try {
+      const allGames = await this.fetchGames().then( response => response.data);
+      this.setState({
+        games : allGames,
+        isLoading: false
+      });
+    } catch (err) {
+      alert(`Error fetching games: ${err.message}`);
+      this.setState({ isLoading:false })
+    }
   }
-  // async componentWillMount() {
-    
-  // }
 
   render() {
     const { classes } = this.props;
@@ -45,20 +55,16 @@ class Games extends Component {
               List Games
             </Button>
             <Button
-              onClick={this.addGame.bind(null, this.props.userId, 'smash bros')}
+              onClick={this.addGame.bind(
+                null,
+                this.props.userId,
+                "1185848798537604"
+              )}
               variant="contained"
               color="primary"
               className={classes.button}
             >
               Add Game
-            </Button>
-            <Button
-              onClick={this.visitUser.bind(null, 'friend Id')}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              view friend
             </Button>
           </React.Fragment>
         )}
