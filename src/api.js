@@ -25,12 +25,12 @@ export const addGame = async (userId, gameRowId) => {
   return addGame;
 };
 
-export const removeGame = async (userId, gameRowId) => {
+export const unWatch = async (userId, gameRows) => {
   const removeGame = await axios.post(
-    `http://localhost:8080/gamesheet/watchlist/remove`,
+    `http://localhost:8080/user/watchlist/remove`,
     {
       userId,
-      gameRowId
+      gameRows
     }
   );
   return removeGame;
