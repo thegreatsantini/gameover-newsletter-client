@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-// import axios from "axios";
+import Loading from '../components/Loading'
 import Button from "@material-ui/core/Button";
 import { listGames, addGame } from "../api";
 const styles = theme => ({
@@ -10,7 +10,6 @@ const styles = theme => ({
   },
 });
 
-// ***change this to stateless function component***
 class Games extends Component {
   state = {
     isLoading: true,
@@ -41,9 +40,11 @@ class Games extends Component {
 
   render() {
     const { classes } = this.props;
+    const { isLoading  } = this.state
     return (
       <React.Fragment>
-        {this.props.isAuthenticated && (
+        {!isLoading 
+        ? (
           <React.Fragment>
             <h1>Search Games component</h1>
             <Button
@@ -67,7 +68,8 @@ class Games extends Component {
               Add Game
             </Button>
           </React.Fragment>
-        )}
+        )
+      : <Loading fontSize={48} /> }
       </React.Fragment>
     );
   }
