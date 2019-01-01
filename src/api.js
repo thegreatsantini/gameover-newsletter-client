@@ -26,7 +26,7 @@ export const addGame = async (userId, gameRowId) => {
 };
 
 export const unWatch = async (userId, gameRows) => {
-  const removeGame = await axios.post(
+  const removeGame = await axios.put(
     `http://localhost:8080/user/watchlist/remove`,
     {
       userId,
@@ -47,7 +47,7 @@ export const followUser = async (userId, friendRowId) => {
   return addFriend;
 };
 
-export const removeFriend = async (userId, friendRowId) => {
+export const unfollowUser = async (userId, friendRowId) => {
   const removeFriend = await axios.post(
     `http://localhost:8080/userssheet/followers/remove`,
     {
