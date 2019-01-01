@@ -25,12 +25,12 @@ export const addGame = async (userId, gameRowId) => {
   return addGame;
 };
 
-export const removeGame = async (userId, gameRowId) => {
-  const removeGame = await axios.post(
-    `http://localhost:8080/gamesheet/watchlist/remove`,
+export const unWatch = async (userId, gameRows) => {
+  const removeGame = await axios.put(
+    `http://localhost:8080/user/watchlist/remove`,
     {
       userId,
-      gameRowId
+      gameRows
     }
   );
   return removeGame;
@@ -47,7 +47,7 @@ export const followUser = async (userId, friendRowId) => {
   return addFriend;
 };
 
-export const removeFriend = async (userId, friendRowId) => {
+export const unfollowUser = async (userId, friendRowId) => {
   const removeFriend = await axios.post(
     `http://localhost:8080/userssheet/followers/remove`,
     {

@@ -20,34 +20,16 @@ class User extends Component {
   };
 
   visitUser = async friendId => {
-    const result = await visitFriend(friendId);
-    console.log(result);
+    return await visitFriend(friendId);
   };
 
   getCurrentUser = async userId => {
     return await currentUser(userId);
   };
 
-  unfollow = async friendRow => {
-    // const result =
-    // console.log(result);
-    const { followers } = this.state;
-    const { userId } = this.props;
-    this.setState(
-      {
-        followers: followers.filter(user => {
-          if (user.rowId != friendRow) {
-            return user;
-          }
-        })
-      },
-      async () => {
-        const rows = this.state.followers.map(user => user.rowId).join(",");
-        await unfollowUser(userId, rows)
-          .then(res => console.log(res))
-          .catch(err => console.log(err));
-      }
-    );
+  unfollow = async (currentUser, friendId) => {
+    const result = await unfollowUser(currentUser, friendId);
+    console.log(result);
   };
 
   removeGame = async rowId => {
@@ -76,14 +58,15 @@ class User extends Component {
 
   async componentDidMount() {
     try {
-      const userData = await this.getCurrentUser(this.props.userId);
-      const { email, userName, followers, watchlist } = userData.data;
-      this.setState({
-        email,
-        userName,
-        followers,
-        watchlist
-      });
+      const userData = await this.visitUser(this.props.match.params.rowId);
+      console.log(userData)
+        const { email, userName, followers, watchlist } = userData.data;
+        this.setState({
+          email,
+          userName,
+          followers,
+          watchlist
+        });
     } catch (err) {
       alert(`Error fetching user data: ${err.message}`);
     }
@@ -105,10 +88,40 @@ class User extends Component {
               removeGame={this.removeGame}
               users={followers}
               games={watchlist}
-              removeFriend={this.unfollow}
               value={value}
               handleChange={this.handleChange}
             />
+            <Button
+              onClick={this.getCurrentUser.bind(null, this.props.userId)}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Get User
+            </Button>
+            <Button
+              onClick={this.unfollow.bind(
+                null,
+                this.props.userId,
+                "4156663718537092"
+              )}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              remove friend
+            </Button>
+            <Button
+              onClick={this.visitUser.bind(
+                null,
+                "f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca"
+              )}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              visit friend
+            </Button>
           </div>
         ) : (
           <Loading fontSize={48} />

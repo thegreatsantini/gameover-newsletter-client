@@ -4,7 +4,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
-import MenuIcon from "@material-ui/icons/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import PropTypes from "prop-types";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -57,13 +56,6 @@ class MenuAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography
               component={Link}
               to="/"
@@ -71,7 +63,7 @@ class MenuAppBar extends React.Component {
               color="inherit"
               className={classes.grow}
             >
-              Smartsheet app
+              Gameover
             </Typography>
             {this.props.isAuthenticated ? (
               <div>

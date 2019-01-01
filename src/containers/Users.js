@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-// import axios from "axios";
 import { followUser, getUsers } from "../api";
 import Button from "@material-ui/core/Button";
 
 import { withStyles } from "@material-ui/core/styles";
+import Loading from "../components/Loading";
 
 const styles = theme => ({
   root: {},
@@ -40,30 +40,38 @@ class Users extends Component {
 
   render() {
     const { classes } = this.props;
-
+    const { isLoading } = this.state;
     return (
       <React.Fragment>
-        <h1>USERS Component</h1>
-        <Button
-          onClick={this.addFriend.bind(
-            null,
-            this.props.userId,
-            "6197721298167684"
-          )}
-          variant="contained"
-          color="primary"
-          className={classes.button}
-        >
-          follow user
-        </Button>
-        <Button
-          onClick={this.fetchUsers}
-          variant="contained"
-          color="primary"
-          className={classes.button}
-        >
-          Get Users
-        </Button>
+        {!isLoading
+        
+        ?(
+          <React.Fragment>
+            <h1>USERS Component</h1>
+            <Button
+              onClick={this.addFriend.bind(
+                null,
+                this.props.userId,
+                "6197721298167684"
+              )}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              follow user
+            </Button>
+            <Button
+              onClick={this.fetchUsers}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Get Users
+            </Button>
+          </React.Fragment>
+        )
+      : <Loading fontSize={48}/>
+      }
       </React.Fragment>
     );
   }
