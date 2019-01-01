@@ -25,7 +25,7 @@ const styles = {
 };
 
 function UserCard(props) {
-  const { classes, users, removeFriend } = props;
+  const { classes, users, removeFriend, show } = props;
   return users.map((user, index) => {
     const { rowId } = user;
     return (
@@ -42,13 +42,14 @@ function UserCard(props) {
             </Typography>
             <CardActions className={classes.buttonContainer}>
               <Button
-                // onClick={unWatch.bind(this, userId, rowId)}
-                  onClick={removeFriend.bind(this, rowId)}
+                style={{ display: show }}
+                onClick={removeFriend.bind(this, rowId)}
                 size="small"
               >
                 unwatch
               </Button>
               <Button
+                style={{ display: show }}
                 component={Link}
                 to={`/friend/${user.id}`}
                 size="small"

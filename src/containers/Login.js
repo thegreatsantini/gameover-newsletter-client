@@ -69,16 +69,6 @@ class Login extends React.Component {
     });
   };
 
-  // handleSubmit = event => {
-  //   axios
-  //     .get("http://localhost:8080/auth/server/username/password")
-  //     .then(res => console.log("res", res))
-  //     .catch(err => {
-  //       alert(err.message);
-  //       console.log("err", err);
-  //     });
-  // };
-
   handleSubmit = event => {
     event.preventDefault();
     this.setState({ isLoading: true });
@@ -103,7 +93,6 @@ class Login extends React.Component {
             isLoading: false
           });
         } else {
-          console.log(res.data)
           localStorage.setItem("userId", res.data.userId);
           localStorage.setItem('currentUser', JSON.stringify(res.data))
           this.props.history.push("/");
@@ -120,7 +109,7 @@ class Login extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Paper className={classes.root} elevation={3}>
+      <Paper className={classes.root} elevation={8}>
         <Typography className={classes.title} gutterBottom component="h1">
           Login
         </Typography>

@@ -1,12 +1,17 @@
 import React, { Component } from "react";
 import { followUser, getUsers } from "../api";
-import Button from "@material-ui/core/Button";
-
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 import { withStyles } from "@material-ui/core/styles";
 import Loading from "../components/Loading";
+import SearchUsersCards from "../components/SearchUsersCards";
 
 const styles = theme => ({
-  root: {},
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 4,
+    paddingBottom: theme.spacing.unit * 4,
+  },
   button: {
     margin: theme.spacing.unit
   }
@@ -18,9 +23,10 @@ class Users extends Component {
     users: []
   };
 
-  addFriend = async (currentUser, friendId) => {
-    const result = await followUser(currentUser, friendId);
-    console.log(result);
+  addFriend = async (friendId) => {
+    const {userId, showNotifier} =this.props;
+    await followUser(userId, friendId);
+    showNotifier("Added game to watchlist!", "success");
   };
   async componentDidMount() {
     try {
@@ -40,38 +46,26 @@ class Users extends Component {
 
   render() {
     const { classes } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, users } = this.state;
     return (
       <React.Fragment>
-        {!isLoading
-        
-        ?(
+        {!isLoading ? (
           <React.Fragment>
-            <h1>USERS Component</h1>
-            <Button
-              onClick={this.addFriend.bind(
-                null,
-                this.props.userId,
-                "6197721298167684"
-              )}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              follow user
-            </Button>
-            <Button
-              onClick={this.fetchUsers}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Get Users
-            </Button>
+            <Paper elevation={8} className={classes.root}>
+              <Grid container spacing={16}>
+                {users.map((val, i) => (
+                  <SearchUsersCards
+                    addFriend={this.addFriend}
+                    key={i}
+                    user={val}
+                  />
+                ))}
+              </Grid>
+            </Paper>
           </React.Fragment>
-        )
-      : <Loading fontSize={48}/>
-      }
+        ) : (
+          <Loading fontSize={48} />
+        )}
       </React.Fragment>
     );
   }

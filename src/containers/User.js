@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Loading from "../components/Loading";
-import Button from "@material-ui/core/Button";
 import UserTabs from "./UserTabs";
 import { currentUser, unWatch, unfollowUser, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
@@ -29,17 +28,11 @@ class User extends Component {
   };
 
   unfollow = async friendRow => {
-    // const result =
-    // console.log(result);
     const { followers } = this.state;
     const { userId } = this.props;
     this.setState(
       {
-        followers: followers.filter(user => {
-          if (user.rowId != friendRow) {
-            return user;
-          }
-        })
+        followers: followers.filter(user => user.rowId !== friendRow)
       },
       async () => {
         const rows = this.state.followers.map(user => user.rowId).join(",");
@@ -55,11 +48,7 @@ class User extends Component {
     const { userId } = this.props;
     this.setState(
       {
-        watchlist: watchlist.filter(game => {
-          if (game.rowId !== rowId) {
-            return game;
-          }
-        })
+        watchlist: watchlist.filter(game => game.rowId !== rowId)
       },
       () => {
         const rows = this.state.watchlist.map(game => game.rowId).join(",");
@@ -102,6 +91,7 @@ class User extends Component {
         {!isLoading ? (
           <div className={classes.root}>
             <UserTabs
+              show={true}
               removeGame={this.removeGame}
               users={followers}
               games={watchlist}
