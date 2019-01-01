@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Loading from '../components/Loading'
-import Button from "@material-ui/core/Button";
+import Loading from "../components/Loading";
 import { listGames, addGame } from "../api";
+import GameCard from "../components/GameCard";
+import Grid from "@material-ui/core/Grid";
+import { Paper } from "@material-ui/core";
 const styles = theme => ({
-  root: {},
-  button: {
-    margin: theme.spacing.unit,
+  root: {
+    ...theme.mixins.gutters(),
+    paddingTop: theme.spacing.unit * 4,
+    paddingBottom: theme.spacing.unit * 4
   },
+  button: {
+    margin: theme.spacing.unit
+  }
 });
 
 class Games extends Component {
@@ -20,56 +26,43 @@ class Games extends Component {
     return await listGames();
   };
 
-  addGame = async (id, rowId) => {
-    const result = await addGame(id, rowId);
-    console.log(result);
+  addGame = async rowId => {
+    const { userId, showNotifier } = this.props;
+    await addGame(userId, rowId);
+    showNotifier("Added game to watchlist!", "success");
   };
 
   async componentDidMount() {
     try {
-      const allGames = await this.fetchGames().then( response => response.data);
+      const allGames = await this.fetchGames().then(response => response.data);
       this.setState({
-        games : allGames,
+        games: allGames,
         isLoading: false
       });
     } catch (err) {
       alert(`Error fetching games: ${err.message}`);
-      this.setState({ isLoading:false })
+      this.setState({ isLoading: false });
     }
   }
 
   render() {
     const { classes } = this.props;
-    const { isLoading  } = this.state
+    const { isLoading, games } = this.state;
     return (
       <React.Fragment>
-        {!isLoading 
-        ? (
+        {!isLoading ? (
           <React.Fragment>
-            <h1>Search Games component</h1>
-            <Button
-              onClick={this.fetchGames}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              List Games
-            </Button>
-            <Button
-              onClick={this.addGame.bind(
-                null,
-                this.props.userId,
-                "1185848798537604"
-              )}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Add Game
-            </Button>
+            <Paper elevation={8} className={classes.root}>
+              <Grid container spacing={16}>
+                {games.map((val, i) => (
+                  <GameCard addGame={this.addGame} key={i} game={val} />
+                ))}
+              </Grid>
+            </Paper>
           </React.Fragment>
-        )
-      : <Loading fontSize={48} /> }
+        ) : (
+          <Loading fontSize={48} />
+        )}
       </React.Fragment>
     );
   }
