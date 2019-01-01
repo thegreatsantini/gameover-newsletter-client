@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-// import {  removeGame } from "../api";
+
 const styles = {
   card: {
     minWidth: 75
@@ -33,7 +33,7 @@ const styles = {
 
 
 function UserGameCard(props) {
-  const { classes, games, removeGame } = props;
+  const { classes, games, removeGame, show } = props;
   const checkAmount = amount => (amount > 0 ? "#43a047" : "#d32f2f");
   return games.map((game, index) => {
     const { rowId } = game;
@@ -69,7 +69,7 @@ function UserGameCard(props) {
           </CardContent>
           <CardActions>
             <Button
-              // onClick={unWatch.bind(this, userId, rowId)}
+              style={{display: show}}
               onClick={removeGame.bind(this, rowId)}
               size="small"
             >
