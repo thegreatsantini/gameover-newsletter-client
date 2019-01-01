@@ -107,7 +107,7 @@ class Signup extends React.Component {
 
   renderForm(classes) {
     return (
-      <Paper className={classes.root} elevation={3}>
+      <Paper className={classes.root} elevation={8}>
         <Typography className={classes.title} gutterBottom component="h1">
           Signup
         </Typography>
