@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Loading from "../components/Loading";
-import Button from "@material-ui/core/Button";
 import UserTabs from "./UserTabs";
 import { currentUser, unWatch, unfollowUser, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
@@ -11,7 +10,7 @@ const styles = theme => ({
   }
 });
 
-class User extends Component {
+class Friend extends Component {
   state = {
     isLoading: true,
     value: 0,
@@ -27,9 +26,20 @@ class User extends Component {
     return await currentUser(userId);
   };
 
-  unfollow = async (currentUser, friendId) => {
-    const result = await unfollowUser(currentUser, friendId);
-    console.log(result);
+  unfollow = async friendRow => {
+    const { followers } = this.state;
+    const { userId } = this.props;
+    this.setState(
+      {
+        followers: followers.filter(user => user.rowId !== friendRow)
+      },
+      async () => {
+        const rows = this.state.followers.map(user => user.rowId).join(",");
+        await unfollowUser(userId, rows)
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+      }
+    );
   };
 
   removeGame = async rowId => {
@@ -37,11 +47,7 @@ class User extends Component {
     const { userId } = this.props;
     this.setState(
       {
-        watchlist: watchlist.filter(game => {
-          if (game.rowId !== rowId) {
-            return game;
-          }
-        })
+        watchlist: watchlist.filter(game => game.rowId !== rowId)
       },
       () => {
         const rows = this.state.watchlist.map(game => game.rowId).join(",");
@@ -59,14 +65,13 @@ class User extends Component {
   async componentDidMount() {
     try {
       const userData = await this.visitUser(this.props.match.params.rowId);
-      console.log(userData)
-        const { email, userName, followers, watchlist } = userData.data;
-        this.setState({
-          email,
-          userName,
-          followers,
-          watchlist
-        });
+      const { email, userName, followers, watchlist } = userData.data;
+      this.setState({
+        email,
+        userName,
+        followers,
+        watchlist
+      });
     } catch (err) {
       alert(`Error fetching user data: ${err.message}`);
     }
@@ -85,43 +90,14 @@ class User extends Component {
         {!isLoading ? (
           <div className={classes.root}>
             <UserTabs
+            show={'none'}
               removeGame={this.removeGame}
               users={followers}
               games={watchlist}
+              removeFriend={this.unfollow}
               value={value}
               handleChange={this.handleChange}
             />
-            <Button
-              onClick={this.getCurrentUser.bind(null, this.props.userId)}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Get User
-            </Button>
-            <Button
-              onClick={this.unfollow.bind(
-                null,
-                this.props.userId,
-                "4156663718537092"
-              )}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              remove friend
-            </Button>
-            <Button
-              onClick={this.visitUser.bind(
-                null,
-                "f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca"
-              )}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              visit friend
-            </Button>
           </div>
         ) : (
           <Loading fontSize={48} />
@@ -131,4 +107,4 @@ class User extends Component {
   }
 }
 
-export default withStyles(styles)(User);
+export default withStyles(styles)(Friend);
