@@ -45,9 +45,9 @@ const UserTabs = props => {
     games,
     users,
     removeGame,
-    removeFriend
+    removeFriend,
+    show
   } = props;
-  // console.log(props)
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -60,14 +60,14 @@ const UserTabs = props => {
         {value === 0 && (
           <TabContainer>
             <Grid container spacing={24}>
-              <UserGameCard removeGame={removeGame} games={games} />
+              <UserGameCard show={show} removeGame={removeGame} games={games} />
             </Grid>
           </TabContainer>
         )}
         {value === 1 && (
           <TabContainer>
             <Grid container spacing={24}>
-              <UserCard removeFriend={removeFriend} users={users} />
+              <UserCard show={show} removeFriend={removeFriend} users={users} />
             </Grid>
           </TabContainer>
         )}
