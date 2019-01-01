@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Loading from "../components/Loading";
 import Button from "@material-ui/core/Button";
 import UserTabs from "./UserTabs";
-import { currentUser, unWatch, removeFriend, visitFriend } from "../api";
+import { currentUser, unWatch, unfollowUser, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -15,7 +15,8 @@ class User extends Component {
   state = {
     isLoading: true,
     value: 0,
-    watchlist: []
+    watchlist: [],
+    followers: []
   };
 
   visitUser = async friendId => {
@@ -27,9 +28,26 @@ class User extends Component {
     return await currentUser(userId);
   };
 
-  unfollow = async (currentUser, friendId) => {
-    const result = await removeFriend(currentUser, friendId);
-    console.log(result);
+  unfollow = async friendRow => {
+    // const result =
+    // console.log(result);
+    const { followers } = this.state;
+    const { userId } = this.props;
+    this.setState(
+      {
+        followers: followers.filter(user => {
+          if (user.rowId != friendRow) {
+            return user;
+          }
+        })
+      },
+      async () => {
+        const rows = this.state.followers.map(user => user.rowId).join(",");
+        await unfollowUser(userId, rows)
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+      }
+    );
   };
 
   removeGame = async rowId => {
@@ -77,50 +95,20 @@ class User extends Component {
   };
 
   render() {
-    const { classes, userId } = this.props;
-    const { isLoading, value, watchlist } = this.state;
+    const { classes } = this.props;
+    const { isLoading, value, watchlist, followers } = this.state;
     return (
       <React.Fragment>
         {!isLoading ? (
           <div className={classes.root}>
             <UserTabs
               removeGame={this.removeGame}
-              userId={userId}
+              users={followers}
               games={watchlist}
+              removeFriend={this.unfollow}
               value={value}
               handleChange={this.handleChange}
             />
-            <Button
-              onClick={this.getCurrentUser.bind(null, this.props.userId)}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Get User
-            </Button>
-            <Button
-              onClick={this.unfollow.bind(
-                null,
-                this.props.userId,
-                "4156663718537092"
-              )}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              remove friend
-            </Button>
-            <Button
-              onClick={this.visitUser.bind(
-                null,
-                "f7f0b3d0-073c-11e9-a2f0-e5c5ec8ad0ca"
-              )}
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              visit friend
-            </Button>
           </div>
         ) : (
           <Loading fontSize={48} />
