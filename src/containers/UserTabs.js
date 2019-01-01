@@ -6,8 +6,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import GameCard from "../components/GameCard";
+import UserGameCard from "../components/UserGameCard";
 import Paper from "@material-ui/core/Paper";
+import UserCard from "../components/UserCard";
 
 function TabContainer(props) {
   return (
@@ -37,7 +38,15 @@ const styles = theme => ({
 });
 
 const UserTabs = props => {
-  const { classes, handleChange, value, games, userId, removeGame } = props;
+  const {
+    classes,
+    handleChange,
+    value,
+    games,
+    users,
+    removeGame,
+    removeFriend
+  } = props;
   // console.log(props)
   return (
     <div className={classes.root}>
@@ -51,11 +60,17 @@ const UserTabs = props => {
         {value === 0 && (
           <TabContainer>
             <Grid container spacing={24}>
-              <GameCard removeGame={removeGame} userId={userId} games={games} />
+              <UserGameCard removeGame={removeGame} games={games} />
             </Grid>
           </TabContainer>
         )}
-        {value === 1 && <TabContainer>friends</TabContainer>}
+        {value === 1 && (
+          <TabContainer>
+            <Grid container spacing={24}>
+              <UserCard removeFriend={removeFriend} users={users} />
+            </Grid>
+          </TabContainer>
+        )}
       </Paper>
     </div>
   );
