@@ -32,7 +32,7 @@ const styles = {
 
 
 
-function GameCard(props) {
+function UserGameCard(props) {
   const { classes, games, removeGame } = props;
   const checkAmount = amount => (amount > 0 ? "#43a047" : "#d32f2f");
   return games.map((game, index) => {
@@ -82,8 +82,8 @@ function GameCard(props) {
   });
 }
 
-GameCard.propTypes = {
+UserGameCard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(GameCard);
+export default withStyles(styles)(UserGameCard);
