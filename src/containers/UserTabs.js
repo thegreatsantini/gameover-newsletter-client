@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import UserGameCard from "../components/UserGameCard";
 import Paper from "@material-ui/core/Paper";
 import UserCard from "../components/UserCard";
-
+import NoData from '../components/NoData';
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
@@ -25,12 +25,10 @@ TabContainer.propTypes = {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    // border: "solid green 3px",
     backgroundColor: theme.palette.background.paper
   },
   paper: {
     margin: "15px 15px",
-    // border: "solid red 2px",
     ...theme.mixins.gutters()
     // paddingTop: theme.spacing.unit * 2,
     // paddingBottom: theme.spacinssg.unit * 2
@@ -58,18 +56,22 @@ const UserTabs = props => {
       </AppBar>
       <Paper className={classes.paper} elevation={8}>
         {value === 0 && (
-          <TabContainer>
+          games.length > 0 
+           ? <TabContainer>
             <Grid container spacing={24}>
               <UserGameCard show={show} removeGame={removeGame} games={games} />
             </Grid>
           </TabContainer>
+          : <NoData fontSize={24} item='games'/>
         )}
         {value === 1 && (
-          <TabContainer>
+          users.length > 0
+          ?<TabContainer>
             <Grid container spacing={24}>
               <UserCard show={show} removeFriend={removeFriend} users={users} />
             </Grid>
           </TabContainer>
+          : <NoData fontSize={23} item='friends'/>
         )}
       </Paper>
     </div>
