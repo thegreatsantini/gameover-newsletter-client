@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Loading from "../components/Loading";
-import axios from 'axios'
 import UserTabs from "./UserTabs";
 import { currentUser, unWatch, unfollowUser, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
@@ -65,7 +64,6 @@ class User extends Component {
   };
 
   async componentDidMount() {
-    axios.get('http://localhost:8080/test').then(res=> console.log(res))
     try {
       const userData = await this.getCurrentUser(this.props.userId);
       const { email, userName, followers, watchlist } = userData.data;
