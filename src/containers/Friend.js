@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Loading from "../components/Loading";
 import UserTabs from "./UserTabs";
-import { currentUser, unWatch, unfollowUser, visitFriend } from "../api";
+import { unWatch, unfollowUser, visitFriend } from "../api";
 import { withStyles } from "@material-ui/core/styles";
 
 const styles = theme => ({
@@ -20,10 +20,6 @@ class Friend extends Component {
 
   visitUser = async friendId => {
     return await visitFriend(friendId);
-  };
-
-  getCurrentUser = async userId => {
-    return await currentUser(userId);
   };
 
   unfollow = async friendRow => {
@@ -58,10 +54,6 @@ class Friend extends Component {
     );
   };
 
-  showPopUp = () => {
-    this.props.showNotifier("from User", "error");
-  };
-
   async componentDidMount() {
     try {
       const userData = await this.visitUser(this.props.match.params.rowId);
@@ -90,7 +82,7 @@ class Friend extends Component {
         {!isLoading ? (
           <div className={classes.root}>
             <UserTabs
-            show={'none'}
+              show={"none"}
               removeGame={this.removeGame}
               users={followers}
               games={watchlist}

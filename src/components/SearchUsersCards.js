@@ -20,7 +20,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     flexWrap: "wrap"
-  },
+  }
 };
 
 function SearchUsersCards(props) {
