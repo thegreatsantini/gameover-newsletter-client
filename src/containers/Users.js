@@ -10,7 +10,7 @@ const styles = theme => ({
   root: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 4,
-    paddingBottom: theme.spacing.unit * 4,
+    paddingBottom: theme.spacing.unit * 4
   },
   button: {
     margin: theme.spacing.unit
@@ -23,8 +23,8 @@ class Users extends Component {
     users: []
   };
 
-  addFriend = async (friendId) => {
-    const {userId, showNotifier} =this.props;
+  addFriend = async friendId => {
+    const { userId, showNotifier } = this.props;
     await followUser(userId, friendId);
     showNotifier("Added game to watchlist!", "success");
   };
