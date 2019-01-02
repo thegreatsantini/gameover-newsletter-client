@@ -77,8 +77,9 @@ class Login extends React.Component {
       password: this.state.password
     };
     axios
-      .post("http://localhost:8080/auth/server/login", userData)
+      .post("https://gameover-newsletter.herokuapp.com/auth/server/login", userData)
       .then(res => {
+        console.log(res)
         if (res.data.message === "User not recognized") {
           this.props.showNotifier(
             "User not recognized, please go to signup to create a profile",
@@ -94,7 +95,7 @@ class Login extends React.Component {
           });
         } else {
           localStorage.setItem("userId", res.data.userId);
-          localStorage.setItem('currentUser', JSON.stringify(res.data))
+          localStorage.setItem("currentUser", JSON.stringify(res.data));
           this.props.history.push("/");
           this.props.authenticateUser(true, res.data.userId, res.data);
         }

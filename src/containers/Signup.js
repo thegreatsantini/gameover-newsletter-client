@@ -89,7 +89,7 @@ class Signup extends React.Component {
         userName: this.state.userName
       };
       axios
-        .post("http://localhost:8080/auth/server/signup", userData)
+        .post("https://gameover-newsletter.herokuapp.com/auth/server/signup", userData)
         .then(res => {
           this.props.showNotifier(
             "Successfully Signedup. Lets start gaming!",
