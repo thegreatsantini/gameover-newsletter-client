@@ -1,24 +1,24 @@
 import axios from "axios";
 
 export const listGames = async () => {
-  const userData = await axios.get(`http://localhost:8080/gamesheets/games`);
+  const userData = await axios.get(`https://gameover-newsletter.herokuapp.com/gamesheets/games`);
   return userData;
 };
 
 export const currentUser = async id => {
-  const userData = await axios.get(`http://localhost:8080/user/${id}`);
+  const userData = await axios.get(`https://gameover-newsletter.herokuapp.com/user/${id}`);
   return userData;
 };
 
 export const visitFriend = async friendId => {
   const friendData = await axios.get(
-    `http://localhost:8080/userssheet/view/${friendId}`
+    `https://gameover-newsletter.herokuapp.com/userssheet/view/${friendId}`
   );
   return friendData;
 };
 
 export const addGame = async (userId, gameRowId) => {
-  const addGame = await axios.put(`http://localhost:8080/user/watchlist/add`, {
+  const addGame = await axios.put(`https://gameover-newsletter.herokuapp.com/user/watchlist/add`, {
     userId,
     gameRowId
   });
@@ -27,7 +27,7 @@ export const addGame = async (userId, gameRowId) => {
 
 export const unWatch = async (userId, gameRows) => {
   const removeGame = await axios.put(
-    `http://localhost:8080/user/watchlist/remove`,
+    `https://gameover-newsletter.herokuapp.com/user/watchlist/remove`,
     {
       userId,
       gameRows
@@ -38,7 +38,7 @@ export const unWatch = async (userId, gameRows) => {
 
 export const followUser = async (userId, friendRowId) => {
   const addFriend = await axios.put(
-    `http://localhost:8080/userssheet/followers/add`,
+    `https://gameover-newsletter.herokuapp.com/userssheet/followers/add`,
     {
       userId,
       friendRowId
@@ -49,7 +49,7 @@ export const followUser = async (userId, friendRowId) => {
 
 export const unfollowUser = async (userId, friendRowId) => {
   const removeFriend = await axios.post(
-    `http://localhost:8080/userssheet/followers/remove`,
+    `https://gameover-newsletter.herokuapp.com/userssheet/followers/remove`,
     {
       userId,
       friendRowId
@@ -59,6 +59,6 @@ export const unfollowUser = async (userId, friendRowId) => {
 };
 
 export const getUsers = async () => {
-  const allUsers = await axios.get("http://localhost:8080/userssheet/all");
+  const allUsers = await axios.get("https://gameover-newsletter.herokuapp.com/userssheet/all");
   return allUsers;
 };
