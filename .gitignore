@@ -10,7 +10,6 @@
 .env
 # production
 /build
-SandBox.js
 # misc
 .DS_Store
 .env.local
