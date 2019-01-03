@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import NavBar from "./components/NavBar";
 import Routes from "./Routes";
 import Notifier, { openSnackbar } from "./components/Notifier";
-
+import Footer from './components/Footer'
 class App extends Component {
   constructor(props) {
     super(props);
@@ -70,6 +70,7 @@ class App extends Component {
             />
             <Routes childProps={childProps} />
             <Notifier />
+            <Footer />
           </React.Fragment>
         )}
       </React.Fragment>
