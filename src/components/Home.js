@@ -49,7 +49,7 @@ const Home = props => {
           </Typography>
           <Divider />
           <List className={classes.listContainer} component="nav">
-            <ListItem button>
+            <ListItem>
               <ListItemIcon>
                 <GamesIcon />
               </ListItemIcon>
